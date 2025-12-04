@@ -1,4 +1,4 @@
-# supermarche12
+# LA PLATEFORME LA GLOIRE OPTIQUE
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -27,4 +27,4 @@ npm run dev
 ```sh
 npm run build
 ```
-# vue-ecommerce1project
+# LA PLATEFORME LA GLOIRE OPTIQUE
