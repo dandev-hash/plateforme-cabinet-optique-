@@ -5,6 +5,7 @@ import AppointmentView from '../views/AppointmentView.vue'
 import QuizAdviceView from '../views/QuizAdviceView.vue'
 import BlogView from '../views/BlogView.vue'
 import LoginView from '../views/LoginView.vue'
+import CheckoutPage from '../views/CheckoutPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,39 +13,49 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/catalogue',
       name: 'catalog',
-      component: CatalogView
+      component: CatalogView,
+    },
+    {
+      path: '/services',
+      name: 'services',
+      component: () => import('../views/ServicesView.vue'),
     },
     {
       // La route pour les services/rendez-vous pointe vers le composant AppointmentView
-      path: '/rendez-vous', 
+      path: '/rendez-vous',
       name: 'appointment',
-      component: AppointmentView
+      component: AppointmentView,
     },
     {
       path: '/conseils-quiz',
       name: 'quiz-advice',
-      component: QuizAdviceView
+      component: QuizAdviceView,
     },
     {
       path: '/blog',
       name: 'blog',
-      component: BlogView
+      component: BlogView,
     },
     {
       path: '/login',
       name: 'login',
-      component: LoginView
-    }
+      component: LoginView,
+    },
+    {
+      path: '/checkout',
+      name: 'Checkout',
+      component: CheckoutPage,
+    },
   ],
   // S'assurer que chaque nouvelle page s'ouvre en haut
   scrollBehavior(to, from, savedPosition) {
     return { top: 0 }
-  }
+  },
 })
 
 export default router

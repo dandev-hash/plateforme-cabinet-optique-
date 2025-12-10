@@ -5,25 +5,25 @@
   -->
   <transition name="fade">
     <div v-if="isVisible" 
-      class="fixed inset-0 z-[90] transition-opacity bg-black/20" 
-      @click="$emit('close')">
+      class="fixed inset-0 z-[90] transition-opacity bg-black/30" 
+      @click="emit('close')">
       
       <!-- Panneau du Panier (Contenu Visible) -->
       <transition name="slide-in">
         <div v-if="isVisible" 
-          class="fixed right-0 top-0 h-full w-full md:max-w-sm bg-white/75 backdrop-blur-md shadow-2xl z-[100] overflow-y-auto flex flex-col rounded-l-xl"
+          class="fixed right-0 top-0 h-full w-full md:max-w-sm bg-white/50 backdrop-blur-md shadow-2xl z-[100] overflow-y-auto flex flex-col "
           :class="{'translate-x-0': isVisible, 'translate-x-full': !isVisible}"
           @click.stop> <!-- Empêche la fermeture si l'on clique à l'intérieur -->
           
           <!-- En-tête du Panier -->
-          <!-- Pas de bordure ou d'ombre pour un effet de fondu/flottant -->
-          <div class="sticky top-0 bg-white/90 backdrop-blur-sm p-6 flex justify-center items-center z-10 flex-shrink-0 relative">
+          <div class="sticky top-0 bg-white/90 backdrop-blur-sm p-4 flex justify-center items-center z-10 flex-shrink-0 relative">
             
             <!-- Titre Stylisé et Centré (Couleur Verte) -->
             <h2 class="text-2xl sm:text-3xl font-extrabold text-green-600 tracking-tight">Votre Panier</h2>
+            <svg class="mx-auto h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
             
             <!-- Bouton de fermeture (Position Absolue) -->
-            <button @click="$emit('close')" 
+            <button @click="emit('close')" 
               class="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-600 transition duration-150 p-2 rounded-full hover:bg-gray-100">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
@@ -40,7 +40,7 @@
             </div>
 
             <!-- Liste des articles (Bordure Verte) -->
-            <ul role="list" class="divide-y divide-green-200">
+            <ul role="list" class="divide-y divide-green-600">
               <li v-for="item in cartItems" :key="item.id" class="flex py-6">
                 
                 <!-- Image (Bordure Grise) -->
@@ -103,7 +103,7 @@
 
                     <!-- Bouton Retirer -->
                     <div class="flex">
-                      <button @click="$emit('removeItem', item.id)" type="button" class="font-medium text-red-600 hover:text-red-800 transition duration-150">
+                      <button @click="emit('removeItem', item.id)" type="button" class="font-medium text-red-600 hover:text-red-800 transition duration-150">
                         Supprimer
                       </button>
                     </div>
@@ -115,7 +115,6 @@
           </div>
 
           <!-- Pied de Page -->
-          <!-- Pas de bordure ou d'ombre pour un effet de fondu/flottant -->
           <div class="flex-shrink-0 bg-white/90 backdrop-blur-sm shadow-2xl p-4 sm:p-6">
             
             <!-- Sous-Total -->
@@ -131,12 +130,14 @@
               <p class="font-semibold">{{ formatCurrency(totalSavings) }}</p>
             </div>
 
-            <!-- Bouton Passer à la Caisse (Couleur Verte) -->
+            <!-- Bouton Passer à la Caisse (CORRIGÉ : Ajout de l'événement click et appel de la fonction goToCheckout) -->
             <div class="mt-6">
-              <a href="#" 
-                class="flex items-center justify-center rounded-xl border border-transparent bg-green-600 px-6 py-3 text-base font-medium text-white shadow-md hover:bg-green-700 transition duration-300">
+              <button 
+                @click="goToCheckout"
+                :disabled="cartItems.length === 0"
+                class="flex items-center justify-center rounded-xl border border-transparent bg-green-600 px-6 py-3 text-base font-medium text-white shadow-md hover:bg-green-700 transition duration-300 w-full disabled:opacity-50 disabled:cursor-not-allowed">
                 Passer à la caisse
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -147,6 +148,12 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useRouter } from 'vue-router'; // 1. Importation du Routeur
+// Note: useCartStore n'est pas nécessaire ici car les données viennent des props (cartItems)
+
+
+// Initialisation du Routeur
+const router = useRouter();
 
 const props = defineProps({
   isVisible: {
@@ -160,6 +167,17 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close', 'removeItem', 'updateQuantity']);
+
+/**
+ * Fonction de navigation vers la page de caisse.
+ */
+const goToCheckout = () => {
+  if (props.cartItems.length > 0) {
+    emit('close'); // Ferme le panneau latéral
+    router.push('/checkout'); // Navigue vers la route de paiement
+  }
+};
+
 
 /**
  * Gère le changement de quantité d'un article.
@@ -248,10 +266,7 @@ const formatCurrency = (value) => {
 
 /* Transition pour le panneau latéral (glissement depuis la droite) */
 .slide-in-enter-active {
-  /* Effet "Tiroir/Ressort" :
-    - Augmentation de la durée à 0.5s pour que l'effet soit visible
-    - cubic-bezier(0.68, -0.55, 0.265, 1.55) crée un léger rebond à la fin du mouvement
-  */
+  /* Effet "Tiroir/Ressort" */
   transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
 }
 .slide-in-leave-active {

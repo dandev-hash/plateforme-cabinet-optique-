@@ -9,9 +9,8 @@
           Image de placeholder (remplacez par votre URL d'image de haute qualité) 
           Classes: 'object-cover' pour couvrir l'espace, 'object-center' pour le centrage.
         -->
-        <img
-          src="c:\Users\COMPUTER CITY\Desktop\Projet de soutenance\projet test1 G\front-end\plateforme la gloire optique\src\assets\top-view-eyeglasses-with-case.jpg"
-          alt="Image d'une optométrie moderne" class="w-full h-full object-cover object-center" />
+        <img src="@/assets/top-view-eyeglasses-with-case.jpg" alt="Image d'une optométrie moderne"
+          class="w-full h-full object-cover object-center" />
         <!-- 
           Overlay sombre avec opacité MINIMALE (bg-black/15) pour améliorer la visibilité de l'image.
           On est passé de /30 à /15.
@@ -58,23 +57,20 @@
         <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
           <h3 class="font-semibold text-2xl text-green-700">Expertise Certifiée</h3>
           <p class="text-gray-500 mt-2">Optométristes diplômés et équipement de pointe pour un diagnostic précis.<img
-              src="c:\Users\COMPUTER CITY\Desktop\Projet de soutenance\projet test1 G\front-end\plateforme la gloire optique\src\assets\patient-ophthalmologist-s-office.jpg"
-              alt="Image d'une optométrie moderne"
+              src="@/assets/patient-ophthalmologist-s-office.jpg" alt="Image d'une optométrie moderne"
               class="w-66 ml-8 h-full  mt-5 object-cover object-center rounded-2xl" /></p>
         </div>
         <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
           <h3 class="font-semibold text-2xl text-green-700">Collections Uniques</h3>
           <p class="text-gray-500 mt-2">Des montures sélectionnées pour leur style et leur qualité, adaptées à tous les
-            budgets.<img
-              src="c:\Users\COMPUTER CITY\Desktop\Projet de soutenance\projet test1 G\front-end\plateforme la gloire optique\src\assets\💔❤💋💝❣✔.jpg"
+            budgets.<img src="@/assets/Cecily Knight _ God of wrath _ Legacy of gods _ Rina Kent _ Books Aesthetic.jpeg"
               alt="Image d'une optométrie moderne" class="w-80 h-full mt-5 object-cover object-center rounded-2xl" />
           </p>
         </div>
         <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
           <h3 class="font-semibold text-2xl text-green-700">Service Client Dédié</h3>
           <p class="text-gray-500 mt-2">Un suivi personnalisé de l'examen de la vue à l'ajustement de vos lunettes.<img
-              src="c:\Users\COMPUTER CITY\Desktop\Projet de soutenance\projet test1 G\front-end\plateforme la gloire optique\src\assets\medium-shot-smiley-woman-teaching.jpg"
-              alt="Image d'une optométrie moderne"
+              src="@/assets/medium-shot-smiley-woman-teaching.jpg" alt="Image d'une optométrie moderne"
               class="w-67 h-full ml-10 mt-5 object-cover object-center rounded-2xl" /></p>
         </div>
       </div>
@@ -161,12 +157,12 @@
                 <!-- Image Placeholder -->
                 <div class="h-60 md:h-72 bg-cover bg-center" :style="{ backgroundImage: `url(${frame.img})` }">
                 </div>
-                
+
                 <div class="p-6 flex flex-col justify-between flex-grow">
                   <div>
                     <h4 class="text-2xl font-bold text-gray-900 mb-2">{{ frame.name }}</h4>
                     <p class="text-sm text-gray-600 mb-4">{{ frame.description }}</p>
-                    
+
                   </div>
                   <div class="flex items-center justify-between pt-4 border-t border-gray-200 mt-auto">
                     <!-- AFFICHAGE EN FCFA -->
@@ -554,7 +550,7 @@ const latestBlogArticles = [
     category: 'Santé Visuelle',
     date: '28 Nov. 2025',
     excerpt: 'De plus en plus exposés aux écrans, nos yeux subissent les effets de la lumière bleue artificielle. Découvrez pourquoi et comment s\'en protéger efficacement avec les bons verres.',
-    img: 'c:\Users\COMPUTER CITY\Desktop\Projet de soutenance\projet test1 G\front-end\plateforme la gloire optique\src\assets\télécharger (5).jpeg', // Image plus grande pour la carte large
+    img: '/src/assets/télécharger (5).jpeg',
     to: '/blog/lumiere-bleue-fatigue',
     size: 'large', // Prend plus de place (2 colonnes)
   },
@@ -564,7 +560,7 @@ const latestBlogArticles = [
     category: 'Mode & Style',
     date: '15 Nov. 2025',
     excerpt: 'Rond, carré, ovale ou en cœur, chaque visage a sa monture idéale ! Suivez notre guide complet pour trouver la paire qui mettra vos traits en valeur.',
-    img: 'c:\Users\COMPUTER CITY\Desktop\Projet de soutenance\projet test1 G\front-end\plateforme la gloire optique\src\assets\télécharger (2).jpeg',
+    img: '/src/assets/télécharger (2).jpeg',
     to: '/blog/choix-monture-visage',
     size: 'medium', // Taille standard (1 colonne)
   },
@@ -574,7 +570,7 @@ const latestBlogArticles = [
     category: 'Optométrie',
     date: '01 Nov. 2025',
     excerpt: 'Maux de tête fréquents, vision floue en fin de journée... Ne négligez pas ces signaux d\'alerte. Un contrôle régulier est essentiel pour votre confort visuel.',
-    img: 'c:\Users\COMPUTER CITY\Desktop\Projet de soutenance\projet test1 G\front-end\plateforme la gloire optique\src\assets\télécharger (6).jpeg',
+    img: '/src/assets/télécharger (6).jpeg',
     to: '/blog/changer-lunettes-signes',
     size: 'medium', // Taille standard (1 colonne)
   },
@@ -754,9 +750,9 @@ onUnmounted(() => {
 
 const newFrames = [
   // Conversion approximative: 1 EUR ≈ 655.957 FCFA
-  { id: 1, name: 'Modèle Eclipse', description: 'Design minimaliste en titane, ultra-léger.', price: '3.000 FCFA', img: 'c:\Users\COMPUTER CITY\Desktop\Projet de soutenance\projet test1 G\front-end\plateforme la gloire optique\src\assets\télécharger (1).jpeg', to: '/catalogue/eclipse' }, // ~249€
-  { id: 2, name: 'Collection Gaia', description: 'Acétate recyclé, branches larges et confortables.', price: '13.000 FCFA', img: 'c:\Users\COMPUTER CITY\Desktop\Projet de soutenance\projet test1 G\front-end\plateforme la gloire optique\src\assets\télécharger (2).jpeg', to: '/catalogue/gaia' }, // ~199€
-  { id: 3, name: 'Vintage 77', description: 'Forme papillon classique, couleur havane intense.', price: '13.750 FCFA', img: 'c:\Users\COMPUTER CITY\Desktop\Projet de soutenance\projet test1 G\front-end\plateforme la gloire optique\src\assets\top-view-eyeglasses-with-case.jpg', to: '/catalogue/vintage77' }, // ~210€
+  { id: 1, name: 'Modèle Eclipse', description: 'Design minimaliste en titane, ultra-léger.', price: '3.000 FCFA', img: '/src/assets/télécharger (1).jpeg', to: '/catalogue/eclipse' }, // ~249€
+  { id: 2, name: 'Collection Gaia', description: 'Acétate recyclé, branches larges et confortables.', price: '13.000 FCFA', img: '/src/assets/télécharger (2).jpeg', to: '/catalogue/gaia' }, // ~199€
+  { id: 3, name: 'Vintage 77', description: 'Forme papillon classique, couleur havane intense.', price: '13.750 FCFA', img: '/src/assets/top-view-eyeglasses-with-case.jpg', to: '/catalogue/vintage77' }, // ~210€
   { id: 4, name: 'Futura Light', description: 'Modèle sans monture apparente, vision périphérique.', price: '8.500 FCFA', img: 'https://placehold.co/400x300/3B82F6/FFFFFF?text=Monture+Futura', to: '/catalogue/futura' }, // ~280€
   { id: 5, name: 'Urban Luxe', description: 'Style carré noir mat, charnières flexibles.', price: '7.500 FCFA', img: 'https://placehold.co/400x300/F59E0B/FFFFFF?text=Monture+Urban', to: '/catalogue/urbanluxe' }, // ~225€
   { id: 6, name: 'Sport Pro', description: 'Conçues pour l\'activité, légères et robustes.', price: '1.000 FCFA', img: 'https://placehold.co/400x300/6366F1/FFFFFF?text=Monture+Sport', to: '/catalogue/sportpro' }, // ~185€
