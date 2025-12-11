@@ -9,7 +9,7 @@
           Image de placeholder (remplacez par votre URL d'image de haute qualité) 
           Classes: 'object-cover' pour couvrir l'espace, 'object-center' pour le centrage.
         -->
-        <img src="@/assets/top-view-eyeglasses-with-case.jpg" alt="Image d'une optométrie moderne"
+        <img src="@/assets/top-view-eyeglasses-with-case.jpg" alt="Image d'une optométrie moderne" loading="lazy"
           class="w-full h-full object-cover object-center" />
         <!-- 
           Overlay sombre avec opacité MINIMALE (bg-black/15) pour améliorer la visibilité de l'image.
@@ -57,20 +57,21 @@
         <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
           <h3 class="font-semibold text-2xl text-green-700">Expertise Certifiée</h3>
           <p class="text-gray-500 mt-2">Optométristes diplômés et équipement de pointe pour un diagnostic précis.<img
-              src="@/assets/patient-ophthalmologist-s-office.jpg" alt="Image d'une optométrie moderne"
+              src="@/assets/patient-ophthalmologist-s-office.jpg" alt="Image d'une optométrie moderne" loading="lazy"
               class="w-66 ml-8 h-full  mt-5 object-cover object-center rounded-2xl" /></p>
         </div>
         <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
           <h3 class="font-semibold text-2xl text-green-700">Collections Uniques</h3>
           <p class="text-gray-500 mt-2">Des montures sélectionnées pour leur style et leur qualité, adaptées à tous les
             budgets.<img src="@/assets/Cecily Knight _ God of wrath _ Legacy of gods _ Rina Kent _ Books Aesthetic.jpeg"
-              alt="Image d'une optométrie moderne" class="w-80 h-full mt-5 object-cover object-center rounded-2xl" />
+              alt="Image d'une optométrie moderne" loading="lazy"
+              class="w-80 h-full mt-5 object-cover object-center rounded-2xl" />
           </p>
         </div>
         <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
           <h3 class="font-semibold text-2xl text-green-700">Service Client Dédié</h3>
           <p class="text-gray-500 mt-2">Un suivi personnalisé de l'examen de la vue à l'ajustement de vos lunettes.<img
-              src="@/assets/medium-shot-smiley-woman-teaching.jpg" alt="Image d'une optométrie moderne"
+              src="@/assets/medium-shot-smiley-woman-teaching.jpg" alt="Image d'une optométrie moderne" loading="lazy"
               class="w-67 h-full ml-10 mt-5 object-cover object-center rounded-2xl" /></p>
         </div>
       </div>
@@ -229,7 +230,7 @@
 
               <!-- Image de l'article -->
               <div :class="[article.size === 'large' ? 'h-60' : 'h-40', 'bg-gray-100 overflow-hidden']">
-                <img :src="article.img" :alt="article.title"
+                <img :src="article.img" :alt="article.title" loading="lazy"
                   class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
               </div>
 

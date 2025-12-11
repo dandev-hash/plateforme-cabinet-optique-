@@ -1,161 +1,171 @@
 <template>
-  <div class="py-10 bg-gray-50 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4">
-
-      <!-- Header -->
-      <div class="mb-6">
-        <h1 class="text-3xl font-extrabold text-gray-900">Catalogue</h1>
-        <p class="text-gray-600 mt-1">Parcourez nos montures — filtrez, cherchez, ajoutez au panier.</p>
+  <div class="min-h-screen bg-white">
+    <!-- Stylish Header with Gradient Accent -->
+    <div class="bg-white border-b border-green-100 py-6 sm:py-8">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex-1">
+            <h1 class="text-6xl sm:text-7xl font-extrabold text-green-900 tracking-tight mb-2"
+              style="font-family: 'Montserrat', sans-serif;">Catalogue</h1>
+            <p class="text-gray-600 text-lg">Explorez nos montures premium — filtrez, cherchez et ajoutez au panier.</p>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <!-- Top Filters (compact & collapsible) -->
-      <div class="mb-6">
-        <div class="p-3 bg-gradient-to-r from-green-50 to-white rounded-xl shadow-sm border border-green-100">
-          <button @click="showFilters = !showFilters"
-            class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-green-100/40 transition">
-            <div class="flex items-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600" viewBox="0 0 20 20"
-                fill="currentColor">
-                <path
-                  d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-.293.707L12 12.414V16a1 1 0 01-1.447.894l-3-1.5A1 1 0 017 15.5V12.414L3.293 6.707A1 1 0 013 6V4z" />
+    <!-- Separator line -->
+    <div class="w-full h-0.5 bg-green-600"></div>
+
+    <!-- Main Content -->
+    <div class="py-6 bg-white">
+      <div class="max-w-7xl mx-auto px-4">
+
+        <!-- Top Filters (compact & collapsible) -->
+        <div class="mb-3">
+          <div class="p-2 bg-white rounded-xl shadow-sm border-1 border-green-600">
+            <button @click="showFilters = !showFilters"
+              class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-green-50 transition">
+              <div class="flex items-center gap-3">
+
+                <span class="font-semibold text-gray-600">Filtres</span>
+                <span v-if="activeFilterCount > 0"
+                  class="ml-1 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">{{ activeFilterCount
+                  }}</span>
+              </div>
+              <svg :class="['w-5 h-5 text-gray-600 transition-transform', showFilters ? 'rotate-180' : '']"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
-              <span class="font-semibold text-gray-800">Filtres</span>
-              <span v-if="activeFilterCount > 0"
-                class="ml-1 bg-green-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">{{ activeFilterCount
-                }}</span>
+            </button>
+
+            <transition name="expand">
+              <div v-show="showFilters"
+                class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 pt-2 border-t-1 border-green-600">
+                <!-- Type -->
+                <div>
+                  <label class="text-xs font-bold text-green-700 uppercase tracking-wider">Type</label>
+                  <div class="mt-2 space-y-1">
+                    <label class="flex items-center text-sm text-gray-700 cursor-pointer">
+                      <input type="checkbox" value="vue" v-model="filters.types" class="w-4 h-4 text-green-600 rounded">
+                      <span class="ml-2">Vue <span class="text-xs text-gray-500 ml-2">({{ countByType('vue')
+                          }})</span></span>
+                    </label>
+                    <label class="flex items-center text-sm text-gray-700 cursor-pointer">
+                      <input type="checkbox" value="soleil" v-model="filters.types"
+                        class="w-4 h-4 text-green-600 rounded">
+                      <span class="ml-2">Solaire <span class="text-xs text-gray-500 ml-2">({{ countByType('soleil')
+                          }})</span></span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Brand -->
+                <div>
+                  <label class="text-xs font-bold text-green-700 uppercase tracking-wider">Marque</label>
+                  <select v-model="filters.brand"
+                    class="w-full mt-2 px-3 py-2 border-1 border-green-600 rounded-lg text-sm bg-white">
+                    <option value="">Toutes les marques</option>
+                    <option v-for="b in availableBrands" :key="b" :value="b">{{ b }}</option>
+                  </select>
+                </div>
+
+                <!-- Shape badges -->
+                <div>
+                  <label class="text-xs font-bold text-green-700 uppercase tracking-wider">Forme</label>
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    <button v-for="s in availableShapes" :key="s" @click="toggleShapeFilter(s)"
+                      :class="['px-3 py-1 text-xs rounded-full transition', filters.shapes.includes(s) ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700']">{{
+                        s }}</button>
+                  </div>
+                </div>
+
+                <!-- Colors -->
+                <div>
+                  <label class="text-xs font-bold text-green-700 uppercase tracking-wider">Couleur</label>
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    <button v-for="c in availableColors" :key="c" @click="toggleColorFilter(c)"
+                      :class="['w-6 h-6 rounded-full border-2 transition hover:scale-110', colorClass(c), filters.colors.includes(c) ? 'ring-2 ring-green-400' : '']"
+                      :title="c"></button>
+                  </div>
+                </div>
+              </div>
+            </transition>
+
+            <div v-show="showFilters" class="mt-2 pt-2 border-t border-green-100 flex justify-end">
+              <button @click="resetFilters"
+                class="text-xs font-semibold text-green-600 px-3 py-1 rounded-lg hover:bg-green-50">↻
+                Réinitialiser</button>
             </div>
-            <svg :class="['w-5 h-5 text-gray-600 transition-transform', showFilters ? 'rotate-180' : '']"
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
 
-          <transition name="expand">
-            <div v-show="showFilters"
-              class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-3 border-t border-green-100">
-              <!-- Type -->
-              <div>
-                <label class="text-xs font-bold text-green-700 uppercase tracking-wider">Type</label>
-                <div class="mt-2 space-y-1">
-                  <label class="flex items-center text-sm text-gray-700 cursor-pointer">
-                    <input type="checkbox" value="vue" v-model="filters.types" class="w-4 h-4 text-green-600 rounded">
-                    <span class="ml-2">Vue <span class="text-xs text-gray-500 ml-2">({{ countByType('vue')
-                        }})</span></span>
-                  </label>
-                  <label class="flex items-center text-sm text-gray-700 cursor-pointer">
-                    <input type="checkbox" value="soleil" v-model="filters.types"
-                      class="w-4 h-4 text-green-600 rounded">
-                    <span class="ml-2">Solaire <span class="text-xs text-gray-500 ml-2">({{ countByType('soleil')
-                        }})</span></span>
-                  </label>
-                </div>
-              </div>
-
-              <!-- Brand -->
-              <div>
-                <label class="text-xs font-bold text-green-700 uppercase tracking-wider">Marque</label>
-                <select v-model="filters.brand"
-                  class="w-full mt-2 px-3 py-2 border border-green-200 rounded-lg text-sm bg-white">
-                  <option value="">Toutes les marques</option>
-                  <option v-for="b in availableBrands" :key="b" :value="b">{{ b }}</option>
-                </select>
-              </div>
-
-              <!-- Shape badges -->
-              <div>
-                <label class="text-xs font-bold text-green-700 uppercase tracking-wider">Forme</label>
-                <div class="mt-2 flex flex-wrap gap-2">
-                  <button v-for="s in availableShapes" :key="s" @click="toggleShapeFilter(s)"
-                    :class="['px-3 py-1 text-xs rounded-full transition', filters.shapes.includes(s) ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700']">{{
-                    s }}</button>
-                </div>
-              </div>
-
-              <!-- Colors -->
-              <div>
-                <label class="text-xs font-bold text-green-700 uppercase tracking-wider">Couleur</label>
-                <div class="mt-2 flex flex-wrap gap-2">
-                  <button v-for="c in availableColors" :key="c" @click="toggleColorFilter(c)"
-                    :class="['w-6 h-6 rounded-full border-2 transition hover:scale-110', colorClass(c), filters.colors.includes(c) ? 'ring-2 ring-green-400' : '']"
-                    :title="c"></button>
-                </div>
-              </div>
-            </div>
-          </transition>
-
-          <div v-show="showFilters" class="mt-3 pt-3 border-t border-green-100 flex justify-end">
-            <button @click="resetFilters"
-              class="text-xs font-semibold text-green-600 px-3 py-1 rounded-lg hover:bg-green-50">↻
-              Réinitialiser</button>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Search & Sort -->
-      <div class="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <input v-model="searchQuery" type="text" placeholder="Chercher une marque, modèle..."
-          class="sm:col-span-2 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" />
-        <select v-model="filters.sortBy" class="px-4 py-3 border border-gray-300 rounded-lg text-sm">
-          <option value="relevance">Pertinence</option>
-          <option value="price-asc">Prix croissant</option>
-          <option value="price-desc">Prix décroissant</option>
-          <option value="newest">Nouveautés</option>
-        </select>
-      </div>
-
-      <!-- Results count -->
-      <div class="mb-6 text-gray-700 font-medium">Résultats : <span class="font-bold text-green-600 text-lg">{{
-        filteredProducts.length }}</span></div>
-
-      <!-- Product grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-        <ProductCard v-for="p in paginatedProducts" :key="p.id" :product="p" @quickView="openQuickView(p)"
-          @addToCart="handleAddToCart" />
-      </div>
-
-      <!-- Empty state -->
-      <div v-if="filteredProducts.length === 0" class="text-center p-10 bg-white rounded-xl shadow-lg">
-        <h3 class="mt-2 text-xl font-medium text-gray-900">Aucun produit trouvé</h3>
-        <p class="mt-1 text-gray-500">Ajustez vos filtres ou la recherche.</p>
-      </div>
-
-      <!-- Pagination -->
-      <div v-if="totalPages > 1" class="mt-8 text-center">
-        <nav class="inline-flex rounded-xl shadow-md bg-white p-1 border border-gray-200" aria-label="Pagination">
-          <button @click="prevPage" :disabled="currentPage === 1" class="px-4 py-2 rounded-l-lg">Précédent</button>
-          <button v-for="page in pagesToShow" :key="page" @click="goToPage(page)"
-            :class="page === currentPage ? 'bg-green-600 text-white rounded-md px-4 py-2 mx-1' : 'bg-white text-gray-700 rounded-md px-4 py-2 mx-1'">{{
-            page }}</button>
-          <button @click="nextPage" :disabled="currentPage === totalPages"
-            class="px-4 py-2 rounded-r-lg">Suivant</button>
-        </nav>
-      </div>
-
-      <!-- Quick view modal -->
-      <QuickViewModal :product="quickViewProduct" :isVisible="isQuickViewVisible" @close="isQuickViewVisible = false" />
-
-      <!-- Floating cart button & cart modal -->
-      <CartFloatingButton :itemCount="cartItemCount" @openCart="isCartVisible = true" />
-      <CartModal :isVisible="isCartVisible" :cartItems="cartItems" @close="isCartVisible = false"
-        @removeItem="handleRemoveFromCart" @updateQuantity="handleUpdateQuantity" />
-
-      <!-- Toasts (transparent green, text 'Ajouté') -->
-      <transition-group name="toast-slide" tag="div" class="fixed top-6 right-6 z-50 pointer-events-none">
-        <div v-for="t in addedToasts" :key="t.id" class="pointer-events-auto mb-2">
-          <div
-            class="flex items-center gap-2 rounded-lg px-3 py-2 bg-green-500/20 border border-green-400/30 backdrop-blur-sm">
-            <svg class="w-5 h-5 text-green-600 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-              fill="currentColor">
-              <path fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clip-rule="evenodd" />
-            </svg>
-            <span class="text-sm font-medium text-green-700">Ajouté</span>
           </div>
         </div>
-      </transition-group>
 
+        <!-- Search & Sort -->
+        <div class="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <input v-model="searchQuery" type="text" placeholder="Chercher une marque, modèle..."
+            class="sm:col-span-2 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" />
+          <select v-model="filters.sortBy" class="px-4 py-3 border border-gray-300 rounded-lg text-sm">
+            <option value="relevance">Pertinence</option>
+            <option value="price-asc">Prix croissant</option>
+            <option value="price-desc">Prix décroissant</option>
+            <option value="newest">Nouveautés</option>
+          </select>
+        </div>
+
+        <!-- Results count -->
+        <div class="mb-6 text-gray-700 font-medium">Résultats : <span class="font-bold text-green-600 text-lg">{{
+          filteredProducts.length }}</span></div>
+
+        <!-- Product grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-6 mb-8">
+          <ProductCard v-for="p in paginatedProducts" :key="p.id" :product="p" @quickView="openQuickView(p)"
+            @addToCart="(product) => handleAddToCart(product)" />
+        </div>
+
+        <!-- Empty state -->
+        <div v-if="filteredProducts.length === 0" class="text-center p-10 bg-white rounded-xl shadow-lg">
+          <h3 class="mt-2 text-xl font-medium text-gray-900">Aucun produit trouvé</h3>
+          <p class="mt-1 text-gray-500">Ajustez vos filtres ou la recherche.</p>
+        </div>
+
+        <!-- Pagination -->
+        <div v-if="totalPages > 1" class="mt-8 text-center">
+          <nav class="inline-flex rounded-xl shadow-md bg-white p-1 border border-gray-200" aria-label="Pagination">
+            <button @click="prevPage" :disabled="currentPage === 1" class="px-4 py-2 rounded-l-lg">Précédent</button>
+            <button v-for="page in pagesToShow" :key="page" @click="goToPage(page)"
+              :class="page === currentPage ? 'bg-green-600 text-white rounded-md px-4 py-2 mx-1' : 'bg-white text-gray-700 rounded-md px-4 py-2 mx-1'">{{
+                page }}</button>
+            <button @click="nextPage" :disabled="currentPage === totalPages"
+              class="px-4 py-2 rounded-r-lg">Suivant</button>
+          </nav>
+        </div>
+
+        <!-- Quick view modal -->
+        <QuickViewModal :product="quickViewProduct" :isVisible="isQuickViewVisible"
+          @close="isQuickViewVisible = false" />
+
+        <!-- Floating cart button & cart modal -->
+        <CartFloatingButton :itemCount="cartItemCount" @openCart="isCartVisible = true" />
+        <CartModal :isVisible="isCartVisible" :cartItems="cartItems" @close="isCartVisible = false"
+          @removeItem="handleRemoveFromCart" @updateQuantity="handleUpdateQuantity" />
+
+        <!-- Toasts (transparent green, text 'Ajouté') -->
+        <transition-group name="toast-slide" tag="div" class="fixed top-6 right-6 z-50 pointer-events-none">
+          <div v-for="t in addedToasts" :key="t.id" class="pointer-events-auto mb-2">
+            <div
+              class="flex items-center gap-2 rounded-lg px-3 py-2 bg-green-500/20 border border-green-400/30 backdrop-blur-sm">
+              <svg class="w-5 h-5 text-green-600 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm font-medium text-green-700">Ajouté</span>
+            </div>
+          </div>
+        </transition-group>
+
+      </div>
     </div>
   </div>
 </template>
@@ -166,6 +176,8 @@ import ProductCard from '../components/ProductCard.vue';
 import QuickViewModal from '../components/QuickViewModal.vue';
 import CartFloatingButton from '../components/CartFloatingButton.vue';
 import CartModal from '../components/CartModal.vue';
+import { useCartStore } from '../stores/cartStore';
+const cartStore = useCartStore();
 
 // --- Data (mock fallback) ---
 const rawProducts = ref([
@@ -187,6 +199,25 @@ const rawProducts = ref([
 const searchQuery = ref('');
 const showFilters = ref(false);
 const filters = ref({ types: [], brand: '', shapes: [], colors: [], sortBy: 'relevance' });
+
+// Persistance des filtres
+const saveFilters = () => {
+  localStorage.setItem('catalogFilters', JSON.stringify(filters.value));
+};
+
+const loadFilters = () => {
+  const saved = localStorage.getItem('catalogFilters');
+  if (saved) {
+    try {
+      filters.value = JSON.parse(saved);
+    } catch (e) {
+      console.error('Erreur lors du chargement des filtres:', e);
+    }
+  }
+};
+
+// Watch pour sauvegarder les changements de filtres
+watch(filters, saveFilters, { deep: true });
 
 const availableBrands = computed(() => Array.from(new Set(rawProducts.value.map(p => p.brand))).sort());
 const availableShapes = computed(() => Array.from(new Set(rawProducts.value.map(p => p.shape))).sort());
@@ -244,19 +275,23 @@ const isQuickViewVisible = ref(false); const quickViewProduct = ref(null);
 const openQuickView = (p) => { quickViewProduct.value = p; isQuickViewVisible.value = true; };
 
 // --- Cart + toasts ---
-const isCartVisible = ref(false); const cartItems = ref([]);
-const cartItemCount = computed(() => cartItems.value.reduce((t, i) => t + (i.quantity || 0), 0));
+const isCartVisible = ref(false);
+const cartItemCount = computed(() => cartStore.totalItemsCount);
 
 let toastIdCounter = 0; const addedToasts = ref([]);
 const handleAddToCart = (product) => {
-  const existing = cartItems.value.find(i => i.id === product.id);
-  if (existing) existing.quantity++; else cartItems.value.push({ ...product, quantity: 1 });
+  const existing = cartStore.items.find(i => i.id === product.id);
+  if (existing) existing.quantity++;
+  else cartStore.items.push({ ...product, quantity: 1 });
   const id = ++toastIdCounter; addedToasts.value.push({ id }); setTimeout(() => { addedToasts.value = addedToasts.value.filter(t => t.id !== id); }, 2500);
 };
-const handleRemoveFromCart = (id) => { cartItems.value = cartItems.value.filter(i => i.id !== id); };
-const handleUpdateQuantity = (id, q) => { const it = cartItems.value.find(i => i.id === id); if (!it) return; if (q < 1) handleRemoveFromCart(id); else it.quantity = q; };
+const handleRemoveFromCart = (id) => { cartStore.items = cartStore.items.filter(i => i.id !== id); };
+const handleUpdateQuantity = (id, q) => { const it = cartStore.items.find(i => i.id === id); if (!it) return; if (q < 1) handleRemoveFromCart(id); else it.quantity = q; };
 
-onMounted(() => { if (currentPage.value < 1) currentPage.value = 1; });
+onMounted(() => {
+  loadFilters();
+  if (currentPage.value < 1) currentPage.value = 1;
+});
 
 </script>
 
