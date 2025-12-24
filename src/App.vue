@@ -11,22 +11,27 @@
   <!-- Le composant de pied de page (TheFooter) en bas -->
   <TheFooter />
 
+  <!-- Bouton flottant du panier (visible sur toutes les pages sauf l'accueil) -->
+  <CartFloatingButton v-if="!isHomePage" :itemCount="cartStore.totalItemsCount" @openCart="isCartVisible = true" />
+
   <!-- 1. Composant de Modale de Panier (Reste en place pour être accessible globalement) -->
   <CartModal :isVisible="isCartVisible" :cartItems="cartStore.items" @close="isCartVisible = false"
     @removeItem="cartStore.removeItem" @updateQuantity="cartStore.updateQuantity" />
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 // Composants de la structure
-import { RouterView } from 'vue-router'; // Nécessaire pour afficher les vues
+import { RouterView, useRoute } from 'vue-router'; // Nécessaire pour afficher les vues
 import TheHeader from './components/TheHeader.vue';
 import TheFooter from './components/TheFooter.vue';
 // Composant de fonctionnalité
 import CartModal from './components/CartModal.vue';
+import CartFloatingButton from './components/CartFloatingButton.vue';
 import ProductList from './components/ProductList.vue';
 import { useCartStore } from './stores/cartStore';
 
+const route = useRoute();
 
 // ------------------------------------
 // 2. Gestion de l'état de la Modale (Conservée)
@@ -35,6 +40,9 @@ const isCartVisible = ref(false); // État initial : la modale est cachée
 // AJOUTER : État qui contrôle l'affichage du badge de confirmation dans TheHeader
 const showCartConfirmation = ref(false);
 const cartStore = useCartStore();
+
+// Vérifier si on est sur la page d'accueil
+const isHomePage = computed(() => route.path === '/' || route.name === 'home');
 </script>
 
 <style>

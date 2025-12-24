@@ -6,6 +6,7 @@ import QuizAdviceView from '../views/QuizAdviceView.vue'
 import BlogView from '../views/BlogView.vue'
 import LoginView from '../views/LoginView.vue'
 import CheckoutPage from '../views/CheckoutPage.vue'
+import AccountView from '../views/AccountView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +51,11 @@ const router = createRouter({
       path: '/checkout',
       name: 'Checkout',
       component: CheckoutPage,
+    },
+    {
+      path: '/mon-compte',
+      name: 'account',
+      component: AccountView,
     },
   ],
   // S'assurer que chaque nouvelle page s'ouvre en haut

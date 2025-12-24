@@ -1,8 +1,26 @@
 <template>
   <div class="min-h-screen bg-white">
     <!-- Stylish Header with Gradient Accent -->
-    <div class="bg-white border-b border-green-100 py-6 sm:py-8">
-      <div class="max-w-7xl mx-auto px-4">
+    <div class="bg-white border-b border-green-100 py-6 sm:py-8 relative z-10 overflow-hidden">
+      <!-- Cercles décoratifs de l'en-tête -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <!-- Gros cercle noir qui recouvre les premières lettres -->
+        <div
+          class="absolute -top-20 -left-20 w-[280px] h-[280px] bg-black/15 rounded-full opacity-70 animate-float-slow">
+        </div>
+
+        <!-- Cercles d'accent -->
+        <div class="absolute top-10 left-1/3 w-32 h-32 bg-green-200 rounded-full opacity-50 animate-float"></div>
+        <div
+          class="absolute -bottom-10 left-1/4 w-40 h-40 bg-emerald-100 rounded-full opacity-60 animate-float-delayed">
+        </div>
+        <div class="absolute top-1/2 right-20 w-24 h-24 bg-gray-200 rounded-full opacity-55 animate-float-slow"></div>
+        <div class="absolute -top-5 right-1/4 w-36 h-36 bg-black/10 rounded-full opacity-50 animate-float"></div>
+        <div class="absolute bottom-0 right-10 w-28 h-28 bg-green-100 rounded-full opacity-60 animate-float-delayed">
+        </div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="flex items-center justify-between gap-4">
           <div class="flex-1">
             <h1 class="text-6xl sm:text-7xl font-extrabold text-green-900 tracking-tight mb-2"
@@ -144,8 +162,7 @@
         <QuickViewModal :product="quickViewProduct" :isVisible="isQuickViewVisible"
           @close="isQuickViewVisible = false" />
 
-        <!-- Floating cart button & cart modal -->
-        <CartFloatingButton :itemCount="cartItemCount" @openCart="isCartVisible = true" />
+        <!-- Cart modal -->
         <CartModal :isVisible="isCartVisible" :cartItems="cartItems" @close="isCartVisible = false"
           @removeItem="handleRemoveFromCart" @updateQuantity="handleUpdateQuantity" />
 
@@ -174,7 +191,6 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import ProductCard from '../components/ProductCard.vue';
 import QuickViewModal from '../components/QuickViewModal.vue';
-import CartFloatingButton from '../components/CartFloatingButton.vue';
 import CartModal from '../components/CartModal.vue';
 import { useCartStore } from '../stores/cartStore';
 const cartStore = useCartStore();
